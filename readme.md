@@ -5,7 +5,7 @@ URL Links:
 
 Description:
 
-The purpose of this assignment was to create a Weather dashboard application with search functionality to find current weather conditions and the future weather outlook for multiple cities using [OpenWeather API] (https://openweathermap.org/). This app runs in the browser and features dynamically updated HTML and CSS powered by jQuery. Used the [Moment.js](https://momentjs.com/) library to work with date and time.
+The purpose of this assignment was to create a Weather dashboard application with search functionality to find current weather conditions and the future weather outlook for multiple cities using [OpenWeather.org] (https://openweathermap.org/). This app runs in the browser and features dynamically updated HTML and CSS powered by jQuery. Used the [Moment.js](https://momentjs.com/) library to work with date and time.
 
 The aim was If a traveler wants to see the weather outlook for multiple cities so that he can plan a trip accordingly.
 
@@ -39,3 +39,7 @@ Application loads last searched city forecast on page load.
 
 Bonus
 It uses Geolocation API to add the user's current location to the initial landing page.
+
+![image](https://user-images.githubusercontent.com/61823648/78421283-325e9a80-760b-11ea-8e25-86a5849046d8.png)
+![image](https://user-images.githubusercontent.com/61823648/78421247-07744680-760b-11ea-9b62-a991cbcd71f2.png)
+![image](https://user-images.githubusercontent.com/61823648/78421289-3f7b8980-760b-11ea-9789-bba4fb5c5575.png)
