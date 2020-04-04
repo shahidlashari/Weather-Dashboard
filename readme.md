@@ -1,7 +1,9 @@
 Weather Dashboard
 
 URL Links:
+https://shahidlashari.github.io/HW6/
 
+https://github.com/shahidlashari/HW6
 
 Description:
 
