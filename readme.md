@@ -42,6 +42,4 @@ Application loads last searched city forecast on page load.
 Bonus
 It uses Geolocation API to add the user's current location to the initial landing page.
 
-![image](https://user-images.githubusercontent.com/61823648/78421283-325e9a80-760b-11ea-8e25-86a5849046d8.png)
-![image](https://user-images.githubusercontent.com/61823648/78421247-07744680-760b-11ea-9b62-a991cbcd71f2.png)
-![image](https://user-images.githubusercontent.com/61823648/78421289-3f7b8980-760b-11ea-9789-bba4fb5c5575.png)
+![image](https://user-images.githubusercontent.com/61823648/78966718-6f1c0d00-7ab5-11ea-9c9c-eba5eb7025e8.png)
