@@ -1,6 +1,4 @@
-
 var savedLocations = [];
-
 var currentLoc;
 
 function initialize() {
@@ -8,7 +6,7 @@ function initialize() {
     savedLocations = JSON.parse(localStorage.getItem("weathercities"));
     var lastSearch;
     //display buttons for previous searches
-    if (savedLocations) {
+    if (savedLocations && savedLocations.length) {
         //get the last city searched so we can display it
         currentLoc = savedLocations[savedLocations.length - 1];
         showPrevious();
@@ -21,17 +19,17 @@ function initialize() {
             getCurrent("Berkeley");
         }
         else {
-            navigator.geolocation.getCurrentPosition(success, error);
+            navigator.geolocation.getCurrentPosition(doSuccess, doError);
         }
     }
 
 }
 
-function success(position) {
+function doSuccess(position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
-    
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=afaa8eea1769b4359fd8e07b2efcefbd";
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=7c4e288682d6728a2eebc55fba744a2d";
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -43,7 +41,7 @@ function success(position) {
 
 }
 
-function error(){
+function doError() {
     //can't geolocate and no previous searches, so just give them one
     currentLoc = "Berkeley"
     getCurrent(currentLoc);
@@ -56,7 +54,7 @@ function showPrevious() {
         var btns = $("<div>").attr("class", "list-group");
         for (var i = 0; i < savedLocations.length; i++) {
             var locBtn = $("<a>").attr("href", "#").attr("id", "loc-btn").text(savedLocations[i]);
-            if (savedLocations[i] == currentLoc){
+            if (savedLocations[i] == currentLoc) {
                 locBtn.attr("class", "list-group-item list-group-item-action active");
             }
             else {
@@ -69,11 +67,11 @@ function showPrevious() {
 }
 
 function getCurrent(city) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=afaa8eea1769b4359fd8e07b2efcefbd&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=7c4e288682d6728a2eebc55fba744a2d&units=imperial";
     $.ajax({
         url: queryURL,
         method: "GET",
-        error: function (){
+        error: function () {
             savedLocations.splice(savedLocations.indexOf(city), 1);
             localStorage.setItem("weathercities", JSON.stringify(savedLocations));
             initialize();
@@ -91,12 +89,12 @@ function getCurrent(city) {
         currCard.append(cardRow);
 
         //get icon for weather conditions
-        var iconURL = "https://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+        var iconURL = "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
 
-        var imgDiv = $("<div>").attr("class", "col-md-4").append($("<img>").attr("src", iconURL).attr("class", "card-img"));
-        cardRow.append(imgDiv);
+        var imgDiv = $("<div>").attr("class", "col-md-4 dailyDiv").append($("<img>").attr("src", iconURL).attr("class", "card-img "));
+       
 
-        var textDiv = $("<div>").attr("class", "col-md-8");
+        var textDiv = $("<div>").attr("class", "col-md-4");
         var cardBody = $("<div>").attr("class", "card-body");
         textDiv.append(cardBody);
         //display city name
@@ -112,7 +110,7 @@ function getCurrent(city) {
         cardBody.append($("<p>").attr("class", "card-text").text("Wind Speed: " + response.wind.speed + " MPH"));
 
         //get UV Index
-        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=afaa8eea1769b4359fd8e07b2efcefbd&lat=" + response.coord.lat + "&lon=" + response.coord.lat;
+        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=7c4e288682d6728a2eebc55fba744a2d&lat=" + response.coord.lat + "&lon=" + response.coord.lat;
         $.ajax({
             url: uvURL,
             method: "GET"
@@ -136,23 +134,26 @@ function getCurrent(city) {
             cardBody.append(uvdisp);
 
         });
-
+        
         cardRow.append(textDiv);
+        cardRow.append(imgDiv);
         getForecast(response.id);
     });
 }
 
 function getForecast(city) {
     //get 5 day forecast
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=afaa8eea1769b4359fd8e07b2efcefbd&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=7c4e288682d6728a2eebc55fba744a2d&units=imperial";
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
         //add container div for forecast cards
+        var pTag= $("<p>").attr("class", "ptag").text("5-day Forecast:");
         var newrow = $("<div>").attr("class", "forecast");
+        $("#weatherForecast").append(pTag);
         $("#weatherForecast").append(newrow);
-
+        // pTag.prepend(newCol);
         //loop through array response to find the forecasts for 15:00
         for (var i = 0; i < response.list.length; i++) {
             if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
@@ -173,7 +174,9 @@ function getForecast(city) {
 
                 bodyDiv.append($("<p>").attr("class", "card-text").html("Temp: " + response.list[i].main.temp + " &#8457;"));
                 bodyDiv.append($("<p>").attr("class", "card-text").text("Humidity: " + response.list[i].main.humidity + "%"));
+                
             }
+            
         }
     });
 }
@@ -183,7 +186,7 @@ function clear() {
     $("#weatherForecast").empty();
 }
 
-function saveLoc(loc){
+function saveLoc(loc) {
     //add this to the saved locations array
     if (savedLocations === null) {
         savedLocations = [loc];
@@ -220,5 +223,9 @@ $(document).on("click", "#loc-btn", function () {
     showPrevious();
     getCurrent(currentLoc);
 });
-
+$(document).on("click", "#clearBtn" ,function () {
+    localStorage.clear();
+    $("#prevSearches").empty();
+    $("#weatherForecast").empty();
+});
 initialize();
